@@ -1,0 +1,48 @@
+/* Fuente sacada de google fonts llamada Outfit */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body{
+  
+    margin: 0;
+}
+
+header{
+    width: 100%;
+    height: auto;
+    background-color: green;
+    display: flex;
+}
+
+.logo{
+    width: 200px;
+    height: auto;
+}
+
+.logo img{
+    width: 100%;
+    height: auto;
+}
+
+.bar{
+
+}
+
+.bar ul{
+    gap: 10%;
+    display: flex;
+    flex-direction: row;    
+}
+
+.bar ul li{
+    list-style: none;
+    font-family: "Outfit", serif;
+    font-size: 30px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.bar ul li:hover{
+    color: white;
+}
+
+
