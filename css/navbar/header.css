@@ -10,10 +10,9 @@ body{
 
 header{
     width: 100%;
-    height: 100px;
+    height: 120px;
     background-color: rgb(34, 34, 34);
     border-bottom: 10px solid transparent;
-    border-image: linear-gradient(45deg, #283c86, #45a247) 1;
     animation: gradienteAnimado 1s linear infinite; /* Aplicar la animación */
 }
 
@@ -34,7 +33,7 @@ nav{
     height: 100px;
     display: flex;
     flex-direction: row;
-   align-items: center;
+    align-items: center;
 }
 
 .bar{
@@ -44,19 +43,56 @@ nav{
     height: auto;
 }
 
-.logo{
+.logo {
     position: relative;
-    width: 230px;
-    height: auto;
-    background-color: rgb(34, 34, 34);
-    margin-left: 5%;
-    margin-top: 5%;
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 8%;
+    margin-left: 5%;
 }
 
-.logo img{
-    width: 100%;
-    height: auto;
+/* Fondo sólido detrás de la imagen */
+.logo .fondo {
+    position: absolute;
+    width: 213px;
+    height: 213px;
+    background-color: rgb(34, 34, 34);
+    border-radius: 50%;
+    z-index: 1; /* Se coloca detrás de la imagen */
+}
+
+/* Imagen del logo */
+.logo img {
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    position: relative;
+    z-index: 2; /* Se coloca por encima del fondo */
+}
+
+/* Borde animado */
+.logo::before {
+    content: "";
+    position: absolute;
+    inset: 0; /* Expande el tamaño al borde del logo */
+    border-radius: 50%;
+    padding: 10px;
+    background: linear-gradient(45deg, #283c86, #45a247, #283c86);
+    z-index: 0; /* Se coloca en el fondo */
+    animation: gradienteAnimadologo 1s ease-in-out infinite;
+}
+
+@keyframes gradienteAnimadologo {
+    0% { background: linear-gradient(45deg, #45a247, #283c86, #45a247); transform: rotate(0deg); }
+    25% { background: linear-gradient(90deg, #283c86, #45a247, #283c86); transform: rotate(90deg); }
+    50% { background: linear-gradient(135deg, #45a247, #283c86, #45a247); transform: rotate(180deg); }
+    75% { background: linear-gradient(180deg, #283c86, #45a247, #283c86); transform: rotate(270deg); }
+    100% { background: linear-gradient(225deg, #45a247, #283c86, #45a247); transform: rotate(360deg); }
 }
 
 #desplegable{
@@ -77,37 +113,15 @@ nav{
     cursor: pointer;
     color: white;
     transition: color 0.3s ease;
+    -webkit-tap-highlight-color: transparent; /* Elimina el resaltado en móviles */
 }
 
 .bar ul li:hover{
     color: rgb(14, 190, 29);
 }
 
-
-/*Escritorio*/
-@media (min-width: 1199.98px)  {
-
-}
-/*Fin Escritorio*/
-
-/*Tablet*/
+/* VISTAS MOVIL*/
 /*Portrait*/
-@media (min-width: 576px) and (max-width: 991.98px) and (orientation:portrait) {
-
-}
-
-/*landscape*/
-@media (min0-width: 991.98px) and (max-width: 1199.98px)and (orientation:landscape) {
-
-}
-/*fin tablet*/
-
-
-
-
-/*movil*/
-/*Portrait*/
-/*Default*/
 @media (max-width: 575.98px)and (orientation:portrait) {
     body{
         margin: 0;
@@ -135,8 +149,19 @@ nav{
         margin: 0;
         padding: 0;
         height: auto;
+        overflow:visible;
         background-color: rgb(34, 34, 34);
         border-radius: 0%;
+        z-index: 1;
+    }
+
+    .logo::before
+    {
+        display: none;
+    }
+
+    .fondo{
+        display: none;
     }
     
     .logo img{
@@ -149,51 +174,275 @@ nav{
         display: block;
         width: 30px;
         height: auto;
-        position: relative;
-        bottom: 50%;
-        margin-left: 10%;
+        position: absolute;
+        bottom: 45%;
+        left: 10%;
     }
-
-    .bar{
-        left: 0;
-        position: relative;
+    .bar {
+        position: absolute;
         width: 100%;
-        height: auto;
+        max-height: 0; /* Oculto inicialmente */
+        left: 0;
+        margin-top: 48%;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-10px); /* Desplazamiento hacia arriba */
+        transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
     }
     
-    .bar ul{
+    /* Clase para mostrar el menú con animación */
+    .mostrar {
+        max-height: 300px; /* Ajusta según el contenido */
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Estilos del UL */
+    .bar ul {
         margin-top: 0;
         padding-top: 5%;
         padding-bottom: 5%;
         align-items: center;
         display: flex;
-        flex-direction:column;
+        flex-direction: column;
         gap: 20px;
-        background: linear-gradient(45deg, #283c86, #45a247); /* Gradiente diagonal */
+        background: linear-gradient(45deg, #283c86, #45a247);
+    }
 
+    @keyframes lista {
+        0% {
+            opacity: 0;
+            transform: translateY(20px); /* Empujamos los elementos hacia abajo */
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0); /* Regresan a su posición original */
+        }
     }
     
-    .bar ul li{
+    /* Ocultamos los elementos inicialmente */
+    .bar ul li {
+        width: 100%;
         text-align: center;
         list-style: none;
         font-family: "Chakra Petch", serif;
         font-size: 20px;
-        letter-spacing: 2.5;
-        cursor: inherit;
+        letter-spacing: 2.5px;
         color: rgb(255, 255, 255);
-        transition: color 0.3s ease;
+        opacity: 0; /* Inicialmente ocultos */
+        transform: translateY(20px); /* Inicialmente desplazados hacia abajo */
+        user-select: none; /* Evita la selección de texto */
     }
     
-    .bar ul li:hover{
-        color: rgb(14, 190, 29);
+    /* Cuando el menú está desplegado, animamos los elementos */
+    .mostrar ul li {
+        animation: lista 0.8s ease-out forwards;
     }
     
+    /* Aplicamos retraso a cada elemento para que aparezcan uno a uno */
+    .mostrar ul li:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    .mostrar ul li:nth-child(2) {
+        animation-delay: 0.4s;
+    }
+    .mostrar ul li:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+    .mostrar ul li:nth-child(4) {
+        animation-delay: .8s;
+    }    
 }
-
-
 
 /*landscape*/
 @media (min-width: 576px) and (max-width: 991.98px) and (orientation:landscape) {
-  
+    body{
+        margin: 0;
+        overflow-x: hidden;
+    }
+    
+    header{
+        width: 100%;
+        height: 120px;
+        background-color: rgb(34, 34, 34);
+    }
+    
+    nav{
+        width: 100%;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo{
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        height: 70px;
+        overflow:visible;
+        border-radius: 0%;
+        z-index: 1;
+        margin-top: 2%;
+    }
+
+    .logo::before
+    {
+        display: none;
+    }
+
+    .fondo{
+        display: none;
+    }
+    
+    .logo img{
+        position: relative;
+        width: 20%;
+        height: auto;
+    }
+
+    #desplegable{
+        display: block;
+        width: 30px;
+        height: auto;
+        position: absolute;
+        bottom: 45%;
+        left: 10%;
+    }
+    .bar {
+        position: absolute;
+        width: 100%;
+        max-height: 0; /* Oculto inicialmente */
+        left: 0;
+        margin-top: 13%;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-10px); /* Desplazamiento hacia arriba */
+        transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    }
+    
+    /* Clase para mostrar el menú con animación */
+    .mostrar {
+        max-height: 300px; /* Ajusta según el contenido */
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Estilos del UL */
+    .bar ul {
+        margin-top: 0;
+        padding-top: 5%;
+        padding-bottom: 5%;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background: linear-gradient(45deg, #283c86, #45a247);
+        padding-right: 1%;
+    }
+
+    @keyframes lista {
+        0% {
+            opacity: 0;
+            transform: translateY(20px); /* Empujamos los elementos hacia abajo */
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0); /* Regresan a su posición original */
+        }
+    }
+    
+    /* Ocultamos los elementos inicialmente */
+    .bar ul li {
+        width: 100%;
+        text-align: center;
+        list-style: none;
+        font-family: "Chakra Petch", serif;
+        font-size: 20px;
+        letter-spacing: 2.5px;
+        color: rgb(255, 255, 255);
+        opacity: 0; /* Inicialmente ocultos */
+        transform: translateY(20px); /* Inicialmente desplazados hacia abajo */
+        user-select: none; /* Evita la selección de texto */
+    }
+    
+    /* Cuando el menú está desplegado, animamos los elementos */
+    .mostrar ul li {
+        animation: lista 0.8s ease-out forwards;
+    }
+    
+    /* Aplicamos retraso a cada elemento para que aparezcan uno a uno */
+    .mostrar ul li:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    .mostrar ul li:nth-child(2) {
+        animation-delay: 0.4s;
+    }
+    .mostrar ul li:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+    .mostrar ul li:nth-child(4) {
+        animation-delay: .8s;
+    }   
+    
 }
-/*fin movil*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Escritorio*/
+@media (min-width: 1199.98px)  {
+
+}
+/*Fin Escritorio*/
+
+/*Tablet*/
+/*Portrait*/
+@media (min-width: 576px) and (max-width: 991.98px) and (orientation:portrait) {
+
+}
+
+/*landscape*/
+@media (min0-width: 991.98px) and (max-width: 1199.98px)and (orientation:landscape) {
+
+}
+/*fin tablet*/
+
+
+
+
